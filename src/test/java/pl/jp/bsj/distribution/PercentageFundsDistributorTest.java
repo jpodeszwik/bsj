@@ -30,9 +30,7 @@ public class PercentageFundsDistributorTest {
         PercentageFundsDistribution percentageFundsDistribution = new PercentageFundsDistribution(distributionMap);
         EqualFundsDistributor equalFundsDistributor = new EqualFundsDistributor();
         PercentageFundsDistributor percentageFundsDistributor = new PercentageFundsDistributor(percentageFundsDistribution, equalFundsDistributor);
-        InvestmentFund polish1 = new InvestmentFund(1L, "Polish", FundType.POLISH);
-        InvestmentFund polish2 = new InvestmentFund(2L, "Foreign", FundType.FOREIGN);
-        Set<InvestmentFund> funds = ImmutableSet.of(polish1, polish2);
+        Set<InvestmentFund> funds = ImmutableSet.of(Funds.POLISH_1, Funds.FOREIGN_1);
 
 
         percentageFundsDistributor.distribute(funds, 101);
@@ -44,15 +42,13 @@ public class PercentageFundsDistributorTest {
         PercentageFundsDistribution percentageFundsDistribution = new PercentageFundsDistribution(distributionMap);
         EqualFundsDistributor equalFundsDistributor = new EqualFundsDistributor();
         PercentageFundsDistributor percentageFundsDistributor = new PercentageFundsDistributor(percentageFundsDistribution, equalFundsDistributor);
-        InvestmentFund polish1 = new InvestmentFund(1L, "Polish1", FundType.POLISH);
-        InvestmentFund polish2 = new InvestmentFund(2L, "Polish2", FundType.POLISH);
-        Set<InvestmentFund> funds = ImmutableSet.of(polish1, polish2);
+        Set<InvestmentFund> funds = ImmutableSet.of(Funds.POLISH_1, Funds.POLISH_2);
 
 
         Map<InvestmentFund, Long> distribution = percentageFundsDistributor.distribute(funds, 100);
 
 
-        assertEquals(ImmutableMap.of(polish1, 50L, polish2, 50L), distribution);
+        assertEquals(ImmutableMap.of(Funds.POLISH_1, 50L, Funds.POLISH_2, 50L), distribution);
     }
 
     @Test
@@ -61,16 +57,13 @@ public class PercentageFundsDistributorTest {
         PercentageFundsDistribution percentageFundsDistribution = new PercentageFundsDistribution(distributionMap);
         EqualFundsDistributor equalFundsDistributor = new EqualFundsDistributor();
         PercentageFundsDistributor percentageFundsDistributor = new PercentageFundsDistributor(percentageFundsDistribution, equalFundsDistributor);
-        InvestmentFund polish = new InvestmentFund(1L, "Polish", FundType.POLISH);
-        InvestmentFund foreign = new InvestmentFund(2L, "Foreign", FundType.FOREIGN);
-        InvestmentFund monetary = new InvestmentFund(3L, "Monetary", FundType.MONETARY);
-        Set<InvestmentFund> funds = ImmutableSet.of(polish, foreign, monetary);
+        Set<InvestmentFund> funds = ImmutableSet.of(Funds.POLISH_1, Funds.FOREIGN_1, Funds.MONETARY_1);
 
 
         Map<InvestmentFund, Long> distribution = percentageFundsDistributor.distribute(funds, 100);
 
 
-        assertEquals(ImmutableMap.of(polish, 10L, foreign, 40L, monetary, 50L), distribution);
+        assertEquals(ImmutableMap.of(Funds.POLISH_1, 10L, Funds.FOREIGN_1, 40L, Funds.MONETARY_1, 50L), distribution);
     }
 
 }
