@@ -1,4 +1,4 @@
-package pl.jp.bsj;
+package pl.jp.bsj.distribution;
 
 import pl.jp.bsj.domain.InvestmentFund;
 

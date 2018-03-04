@@ -1,4 +1,4 @@
-package pl.jp.bsj;
+package pl.jp.bsj.distribution;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -12,6 +12,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class EqualFundsDistributorTest {
+
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionIfFundsAreEmpty() {
         EqualFundsDistributor equalFundsDistributor = new EqualFundsDistributor();
