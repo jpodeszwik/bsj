@@ -13,11 +13,11 @@ class EqualFundsDistributor {
             throw new IllegalArgumentException("Can't divide amount if there are no funds");
         }
 
-        long distributedAmount = amount / funds.size();
-
-        if (distributedAmount * funds.size() != amount) {
-            throw new IllegalStateException("Tried to split amount that isn't divisible");
+        if (amount % funds.size() != 0) {
+            throw new IllegalArgumentException("Amount cannot be split equally to " + funds.size() + " funds");
         }
+
+        long distributedAmount = amount / funds.size();
 
         return funds.stream().collect(Collectors.toMap(Function.identity(), fund -> distributedAmount));
     }

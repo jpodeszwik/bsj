@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import pl.jp.bsj.domain.FundType;
 import pl.jp.bsj.domain.InvestmentFund;
+import pl.jp.bsj.util.CollectionUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ class PercentageFundsDistributor {
         Map<FundType, Long> fundTypeAmount = fundsGroups.keySet().stream()
                 .collect(Collectors.toMap(Function.identity(), fundType -> fundTypeAmount(fundType, total)));
 
-        if (fundTypeAmount.values().stream().mapToLong(l -> l).sum() != total) {
+        if (CollectionUtil.sumAsLongs(fundTypeAmount.values()) != total) {
             throw new IllegalArgumentException("Provided amount didn't distribute properly");
         }
 

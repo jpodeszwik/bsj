@@ -1,6 +1,7 @@
 package pl.jp.bsj.distribution;
 
 import pl.jp.bsj.domain.FundType;
+import pl.jp.bsj.util.CollectionUtil;
 
 import java.util.Map;
 import java.util.Optional;
@@ -13,7 +14,7 @@ class PercentageFundsDistribution {
             throw new IllegalArgumentException("Percentage distribution must not be null");
         }
 
-        if (percentageDistribution.values().stream().mapToInt(i -> i).sum() != 100) {
+        if (CollectionUtil.sumAsLongs(percentageDistribution.values()) != 100) {
             throw new IllegalArgumentException("Funds distribution should sum up to 100");
         }
 

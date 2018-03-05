@@ -20,7 +20,7 @@ public class EqualFundsDistributorTest {
         equalFundsDistributor.distribute(ImmutableList.of(), 1L);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionIfFundsCannotBeProperlyDivided() {
         EqualFundsDistributor equalFundsDistributor = new EqualFundsDistributor();
         List<InvestmentFund> funds = ImmutableList.of(Funds.POLISH_1, Funds.POLISH_2);
