@@ -20,13 +20,19 @@ public class EqualFundsDistributorTest {
         equalFundsDistributor.distribute(ImmutableList.of(), 1L);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionIfFundsCannotBeProperlyDivided() {
+    @Test
+    public void shouldAssignRemainderToFirstFund() {
         EqualFundsDistributor equalFundsDistributor = new EqualFundsDistributor();
         List<InvestmentFund> funds = ImmutableList.of(Funds.POLISH_1, Funds.POLISH_2);
 
 
-        equalFundsDistributor.distribute(funds, 3L);
+        InvestmentResult distribution = equalFundsDistributor.distribute(funds, 3L);
+
+
+        Map<InvestmentFund, Long> expectedInvestments = ImmutableMap.of(Funds.POLISH_1, 1L, Funds.POLISH_2, 1L);
+        long expectedRemainder = 1;
+        assertEquals(new InvestmentResult(expectedInvestments, expectedRemainder), distribution);
+
     }
 
     @Test
@@ -36,10 +42,10 @@ public class EqualFundsDistributorTest {
         long amount = 3L;
 
 
-        Map<InvestmentFund, Long> distribution = equalFundsDistributor.distribute(funds, amount);
+        InvestmentResult distribution = equalFundsDistributor.distribute(funds, amount);
 
 
-        assertEquals(ImmutableMap.of(Funds.POLISH_1, amount), distribution);
+        assertEquals(InvestmentResult.of(ImmutableMap.of(Funds.POLISH_1, amount)), distribution);
     }
 
     @Test
@@ -49,9 +55,9 @@ public class EqualFundsDistributorTest {
         long amount = 2L;
 
 
-        Map<InvestmentFund, Long> distribution = equalFundsDistributor.distribute(funds, amount);
+        InvestmentResult distribution = equalFundsDistributor.distribute(funds, amount);
 
 
-        assertEquals(ImmutableMap.of(Funds.POLISH_1, 1L, Funds.POLISH_2, 1L), distribution);
+        assertEquals(InvestmentResult.of(ImmutableMap.of(Funds.POLISH_1, 1L, Funds.POLISH_2, 1L)), distribution);
     }
 }

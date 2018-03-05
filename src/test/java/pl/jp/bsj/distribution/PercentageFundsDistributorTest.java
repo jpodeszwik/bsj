@@ -24,8 +24,8 @@ public class PercentageFundsDistributorTest {
         percentageFundsDistributor.distribute(ImmutableSet.of(), 100);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionForAmountThatCantBeDistributed() {
+    @Test
+    public void shouldReturnRemainderForAmountThatCantBeDistributed() {
         Map<FundType, Integer> distributionMap = ImmutableMap.of(FundType.POLISH, 50, FundType.FOREIGN, 50);
         PercentageFundsDistribution percentageFundsDistribution = new PercentageFundsDistribution(distributionMap);
         EqualFundsDistributor equalFundsDistributor = new EqualFundsDistributor();
@@ -33,7 +33,11 @@ public class PercentageFundsDistributorTest {
         Set<InvestmentFund> funds = ImmutableSet.of(Funds.POLISH_1, Funds.FOREIGN_1);
 
 
-        percentageFundsDistributor.distribute(funds, 101);
+        InvestmentResult distribution = percentageFundsDistributor.distribute(funds, 101);
+
+
+        long expectedRemainder = 1;
+        assertEquals(new InvestmentResult(ImmutableMap.of(Funds.POLISH_1, 50L, Funds.FOREIGN_1, 50L), expectedRemainder), distribution);
     }
 
     @Test
@@ -45,10 +49,10 @@ public class PercentageFundsDistributorTest {
         Set<InvestmentFund> funds = ImmutableSet.of(Funds.POLISH_1, Funds.POLISH_2);
 
 
-        Map<InvestmentFund, Long> distribution = percentageFundsDistributor.distribute(funds, 100);
+        InvestmentResult distribution = percentageFundsDistributor.distribute(funds, 100);
 
 
-        assertEquals(ImmutableMap.of(Funds.POLISH_1, 50L, Funds.POLISH_2, 50L), distribution);
+        assertEquals(InvestmentResult.of(ImmutableMap.of(Funds.POLISH_1, 50L, Funds.POLISH_2, 50L)), distribution);
     }
 
     @Test
@@ -60,10 +64,10 @@ public class PercentageFundsDistributorTest {
         Set<InvestmentFund> funds = ImmutableSet.of(Funds.POLISH_1, Funds.FOREIGN_1, Funds.MONETARY_1);
 
 
-        Map<InvestmentFund, Long> distribution = percentageFundsDistributor.distribute(funds, 100);
+        InvestmentResult distribution = percentageFundsDistributor.distribute(funds, 100);
 
 
-        assertEquals(ImmutableMap.of(Funds.POLISH_1, 10L, Funds.FOREIGN_1, 40L, Funds.MONETARY_1, 50L), distribution);
+        assertEquals(InvestmentResult.of(ImmutableMap.of(Funds.POLISH_1, 10L, Funds.FOREIGN_1, 40L, Funds.MONETARY_1, 50L)), distribution);
     }
 
 }

@@ -8,17 +8,16 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 class EqualFundsDistributor {
-    Map<InvestmentFund, Long> distribute(Collection<InvestmentFund> funds, long amount) {
+    InvestmentResult distribute(Collection<InvestmentFund> funds, long amount) {
         if (funds == null || funds.size() == 0) {
             throw new IllegalArgumentException("Can't divide amount if there are no funds");
         }
 
-        if (amount % funds.size() != 0) {
-            throw new IllegalArgumentException("Amount cannot be split equally to " + funds.size() + " funds");
-        }
+        long amountPerFund = amount / funds.size();
+        long remainder = amount % funds.size();
 
-        long distributedAmount = amount / funds.size();
+        Map<InvestmentFund, Long> investedMoney = funds.stream().collect(Collectors.toMap(Function.identity(), fund -> amountPerFund));
 
-        return funds.stream().collect(Collectors.toMap(Function.identity(), fund -> distributedAmount));
+        return new InvestmentResult(investedMoney, remainder);
     }
 }

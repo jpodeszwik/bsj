@@ -19,7 +19,7 @@ public class InvestmentStrategiesTest {
         long amount = 10000;
 
 
-        Map<InvestmentFund, Long> result = investmentStrategy.distribute(investmentFunds, amount);
+        InvestmentResult result = investmentStrategy.distribute(investmentFunds, amount);
 
 
         Map<InvestmentFund, Long> expectedInvestments = new ImmutableMap.Builder<InvestmentFund, Long>()
@@ -30,8 +30,7 @@ public class InvestmentStrategiesTest {
                 .put(Funds.FOREIGN_3, 2500L)
                 .put(Funds.MONETARY_1, 500L)
                 .build();
-
-        assertEquals(expectedInvestments, result);
+        assertEquals(InvestmentResult.of(expectedInvestments), result);
     }
 
     @Test
@@ -42,7 +41,7 @@ public class InvestmentStrategiesTest {
         long amount = 10000;
 
 
-        Map<InvestmentFund, Long> result = investmentStrategy.distribute(investmentFunds, amount);
+        InvestmentResult result = investmentStrategy.distribute(investmentFunds, amount);
 
 
         Map<InvestmentFund, Long> expectedInvestments = new ImmutableMap.Builder<InvestmentFund, Long>()
@@ -54,6 +53,30 @@ public class InvestmentStrategiesTest {
                 .put(Funds.MONETARY_1, 1000L)
                 .build();
 
-        assertEquals(expectedInvestments, result);
+        assertEquals(InvestmentResult.of(expectedInvestments), result);
+    }
+
+    @Test
+    public void aggressiveInvestmentStrategyTest() {
+        InvestmentStrategy investmentStrategy = InvestmentStrategies.newAggressiveInvestmentStrategy();
+        Set<InvestmentFund> investmentFunds = ImmutableSet.of(
+                Funds.POLISH_1, Funds.POLISH_2, Funds.FOREIGN_1, Funds.FOREIGN_2, Funds.FOREIGN_3, Funds.MONETARY_1);
+        long amount = 10000;
+
+
+        InvestmentResult result = investmentStrategy.distribute(investmentFunds, amount);
+
+
+        Map<InvestmentFund, Long> expectedInvestments = new ImmutableMap.Builder<InvestmentFund, Long>()
+                .put(Funds.POLISH_1, 2000L)
+                .put(Funds.POLISH_2, 2000L)
+                .put(Funds.FOREIGN_1, 666L)
+                .put(Funds.FOREIGN_2, 666L)
+                .put(Funds.FOREIGN_3, 666L)
+                .put(Funds.MONETARY_1, 4000L)
+                .build();
+        long expectedRemainder = 2;
+
+        assertEquals(new InvestmentResult(expectedInvestments, expectedRemainder), result);
     }
 }

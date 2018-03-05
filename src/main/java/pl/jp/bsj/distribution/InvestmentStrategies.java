@@ -14,6 +14,10 @@ public class InvestmentStrategies {
         return newInvestmentStrategy(ImmutableMap.of(FundType.POLISH, 30, FundType.FOREIGN, 60, FundType.MONETARY, 10));
     }
 
+    public static InvestmentStrategy newAggressiveInvestmentStrategy() {
+        return newInvestmentStrategy(ImmutableMap.of(FundType.POLISH, 40, FundType.FOREIGN, 20, FundType.MONETARY, 40));
+    }
+
     private static InvestmentStrategy newInvestmentStrategy(Map<FundType, Integer> fundsDistribution) {
         PercentageFundsDistribution percentageFundsDistribution = new PercentageFundsDistribution(fundsDistribution);
         return new PercentageFundsDistributor(percentageFundsDistribution, new EqualFundsDistributor());

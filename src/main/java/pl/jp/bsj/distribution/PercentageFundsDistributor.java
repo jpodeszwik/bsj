@@ -17,7 +17,7 @@ class PercentageFundsDistributor implements InvestmentStrategy {
     private final PercentageFundsDistribution percentageFundsDistribution;
     private final EqualFundsDistributor equalFundsDistributor;
 
-    public Map<InvestmentFund, Long> distribute(Set<InvestmentFund> funds, long total) {
+    public InvestmentResult distribute(Set<InvestmentFund> funds, long total) {
         if (funds == null || funds.size() == 0) {
             throw new IllegalArgumentException("Funds should not be empty");
         }
@@ -27,15 +27,33 @@ class PercentageFundsDistributor implements InvestmentStrategy {
         Map<FundType, Long> fundTypeAmount = fundsGroups.keySet().stream()
                 .collect(Collectors.toMap(Function.identity(), fundType -> fundTypeAmount(fundType, total)));
 
-        if (CollectionUtil.sumAsLongs(fundTypeAmount.values()) != total) {
-            throw new IllegalArgumentException("Provided amount didn't distribute properly");
-        }
+        List<InvestmentResult> investmentsPerType = fundsGroups.entrySet().stream()
+                .map(entry -> investInFunds(fundTypeAmount, entry))
+                .collect(Collectors.toList());
 
-        return fundsGroups.entrySet().stream()
-                .map(entry -> equalFundsDistributor.distribute(entry.getValue(), fundTypeAmount.get(entry.getKey())))
+        InvestmentResult investmentResult = combine(investmentsPerType);
+
+        long remainder = total - CollectionUtil.sumAsLongs(investmentResult.getInvestedMoney().values());
+
+        return new InvestmentResult(investmentResult.getInvestedMoney(), remainder);
+    }
+
+    private InvestmentResult combine(List<InvestmentResult> investmentsPerType) {
+        Map<InvestmentFund, Long> totalInvestedMoney = investmentsPerType.stream()
+                .map(InvestmentResult::getInvestedMoney)
                 .map(Map::entrySet)
                 .flatMap(Set::stream)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        long totalRemainder = investmentsPerType.stream()
+                .mapToLong(InvestmentResult::getRemainder)
+                .sum();
+
+        return new InvestmentResult(totalInvestedMoney, totalRemainder);
+    }
+
+    private InvestmentResult investInFunds(Map<FundType, Long> fundTypeAmount, Map.Entry<FundType, List<InvestmentFund>> entry) {
+        return equalFundsDistributor.distribute(entry.getValue(), fundTypeAmount.get(entry.getKey()));
     }
 
     private long fundTypeAmount(FundType fundType, long total) {
