@@ -13,11 +13,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-class PercentageFundsDistributor {
+class PercentageFundsDistributor implements InvestmentStrategy {
     private final PercentageFundsDistribution percentageFundsDistribution;
     private final EqualFundsDistributor equalFundsDistributor;
 
-    Map<InvestmentFund, Long> distribute(Set<InvestmentFund> funds, long total) {
+    public Map<InvestmentFund, Long> distribute(Set<InvestmentFund> funds, long total) {
         if (funds == null || funds.size() == 0) {
             throw new IllegalArgumentException("Funds should not be empty");
         }
