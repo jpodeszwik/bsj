@@ -1,4 +1,4 @@
-package pl.jp.bsj.distribution;
+package pl.jp.bsj.investment;
 
 import pl.jp.bsj.domain.FundType;
 import pl.jp.bsj.util.CollectionUtil;
@@ -6,16 +6,16 @@ import pl.jp.bsj.util.CollectionUtil;
 import java.util.Map;
 import java.util.Optional;
 
-class PercentageFundsDistribution {
+class PercentageFundsPerTypeDistribution {
     private final Map<FundType, Integer> percentageDistribution;
 
-    PercentageFundsDistribution(Map<FundType, Integer> percentageDistribution) {
+    PercentageFundsPerTypeDistribution(Map<FundType, Integer> percentageDistribution) {
         if (percentageDistribution == null) {
-            throw new IllegalArgumentException("Percentage distribution must not be null");
+            throw new IllegalArgumentException("Percentage investment must not be null");
         }
 
         if (CollectionUtil.sumAsLongs(percentageDistribution.values()) != 100) {
-            throw new IllegalArgumentException("Funds distribution should sum up to 100");
+            throw new IllegalArgumentException("Funds investment should sum up to 100");
         }
 
         this.percentageDistribution = percentageDistribution;

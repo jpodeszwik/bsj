@@ -1,16 +1,15 @@
-package pl.jp.bsj.distribution;
+package pl.jp.bsj.domain;
 
 import lombok.Value;
-import pl.jp.bsj.domain.InvestmentFund;
 
 import java.util.Map;
 
 @Value
-class InvestmentResult {
+public class InvestmentResult {
     private final Map<InvestmentFund, Long> investedMoney;
     private final long remainder;
 
-    static InvestmentResult of(Map<InvestmentFund, Long> money) {
+    public static InvestmentResult withoutRemainder(Map<InvestmentFund, Long> money) {
         return new InvestmentResult(money, 0);
     }
 }

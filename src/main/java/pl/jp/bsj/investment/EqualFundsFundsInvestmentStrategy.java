@@ -1,14 +1,16 @@
-package pl.jp.bsj.distribution;
+package pl.jp.bsj.investment;
 
 import pl.jp.bsj.domain.InvestmentFund;
+import pl.jp.bsj.domain.InvestmentResult;
 
-import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-class EqualFundsDistributor {
-    InvestmentResult distribute(Collection<InvestmentFund> funds, long amount) {
+class EqualFundsFundsInvestmentStrategy {
+
+    InvestmentResult invest(Set<InvestmentFund> funds, long amount) {
         if (funds == null || funds.size() == 0) {
             throw new IllegalArgumentException("Can't divide amount if there are no funds");
         }
